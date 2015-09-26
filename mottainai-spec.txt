@@ -1,0 +1,99 @@
+game board has the following areas:
+each player's play area
+the central floor
+the deck
+
+each play area has the following areas:
+player's hand
+action slot
+helpers slot
+crafting bench slot
+sales slot
+left wing works
+right wing works
+waiting area
+
+each card has:
+name
+type
+special ability (complex script)
+
+types are:
+1-paper-clerk
+2-stone-monk
+2-cloth-tailor
+3-clay-potter
+3-metal-smith
+
+game flow is
+
+setup:
+each player draws 5 cards
+each player draws 1 card to the floor
+player with card closest to A goes first
+each player draws a card face down to their task slot
+
+turn:
+discard down to five
+perform morning effects
+discard current task, if any, to floor
+choose task from hand, if any
+perform each opponents task, if any, clockwise
+perform your task, or pray if none
+perform night effects
+draw waiting area to hand
+
+task:
+check helpers to determine number of times
+for each time, choose one:
+ - perform role
+ - craft
+ - pray
+
+number of actions per task:
+helpers of task.type * ((leftWing.covers(task.type) ? 1: 0) * 2)
+
+roles:
+clerk: move 1 card from crafting bench to sales
+monk: move 1 card from floor to helpers
+tailor: discard X, draw 5 total
+potter: move 1 card from floor to crafting bench
+smith: complete 1 work from hand using materials from hand
+
+craft:
+complete 1 work from hand of task.type using materials from crafting bench
+
+pray:
+draw 1 card from deck
+
+game end:
+as soon as one player builds 5 works in one wing
+as soon as the deck runs out
+
+objects/methods
+void deck.toHand(Player)
+void deck.toFloor
+void deck.toTask(isFaceDown)
+
+Player[] players.each
+
+void player.hand.return(Card)
+Card player.hand.toTask
+
+Card[] player.works.each
+bool work.hasMorningEffect
+bool work.hasNightEffect
+
+void player.task.toFloor
+Card[] player.helpers
+Card[] player.craftingBench
+Card[] player.sales
+Card[] player.works
+Card[] player.leftWing
+Card[] player.rightWing
+Card[] player.hand
+
+Role card.role
+Material card.material
+string card.name
+Action card.action
