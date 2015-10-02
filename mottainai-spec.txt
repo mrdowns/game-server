@@ -97,3 +97,11 @@ Role card.role
 Material card.material
 string card.name
 Action card.action
+
+
+app structure, top to bottom:
+
+socket.io layer for real-time client response
+express MVC layer for app structure
+model layer for game logic
+persistence layer

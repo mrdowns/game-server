@@ -1,17 +1,17 @@
 window.onload = function() {
  
-    var messages = [];
+    var games = [];
     var socket = io.connect('http://localhost:3000');
     var field = document.getElementById("field");
     var sendButton = document.getElementById("send");
     var content = document.getElementById("content");
  
-    socket.on('message', function (data) {
-        if(data.message) {
-            messages.push(data.message);
+    socket.on('list', function (data) {
+        games = [];
+        if(data.length && data.length > 0) {
             var html = '';
-            for(var i=0; i<messages.length; i++) {
-                html += messages[i] + '<br />';
+            for(var i = 0; i < data.length; i++) {
+                html += data[i].gameId + '<br />';
             }
             content.innerHTML = html;
         } else {
@@ -21,7 +21,7 @@ window.onload = function() {
  
     sendButton.onclick = function() {
         var text = field.value;
-        socket.emit('send', { message: text });
+        socket.emit('create', { message: text });
     };
  
 };

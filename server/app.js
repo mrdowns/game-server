@@ -1,5 +1,6 @@
 var express = require('express');
 var handlebars = require('express-handlebars');
+var game = require('./controllers/game.js');
 
 var app = express();
 var port = 3000;
@@ -15,10 +16,13 @@ app.use(express.static(__dirname + '/public'));
 var io = require('socket.io').listen(app.listen(port));
 
 io.sockets.on('connection', function (socket) {
-	socket.emit('message', { message: 'welcome' });
-	socket.on('send', function (data) {
-		io.sockets.emit('message', data);
-	})
-})
+
+	socket.emit('list', game.list());
+	
+	socket.on('create', function (data) {
+		game.create()
+		io.sockets.emit('list', game.list());
+	});
+});
 
 console.log("Listening on port " + port);
