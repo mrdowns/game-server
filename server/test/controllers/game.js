@@ -80,7 +80,7 @@ describe('game', function () {
 	});
 
 	describe('join', function () {
-		var list, games = {};
+		var games = {};
 
 		before(function () {
 			var controller = newController();
@@ -89,7 +89,7 @@ describe('game', function () {
 			controller.create();
 			controller.create();
 
-			list = controller.list();
+			var list = controller.list();
 
 			games['g1'] = controller.join('player1', list[0].gameId);
 
@@ -115,10 +115,14 @@ describe('game', function () {
 			expect(games['g2'].players[1]).to.have.property('id').equal('player2');
 		});
 
+		it('should add players to the same game', function () {
+			expect(games['g2'].id).to.equal(games['g3'].id);
+		});
+
 		it('should not add same player twice', function () {
-			expect(list[2]).to.have.property('players').with.length(2);
-			expect(list[2].players[0]).to.have.property('id').equal('player3');
-			expect(list[2].players[1]).to.have.property('id').equal('player4');
+			expect(games['g4']).to.have.property('players').with.length(2);
+			expect(games['g4'].players[0]).to.have.property('id').equal('player3');
+			expect(games['g4'].players[1]).to.have.property('id').equal('player4');
 		});
 
 		it('shouldnt do anything with an invalid id', function () {
