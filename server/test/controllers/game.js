@@ -25,8 +25,8 @@ retrive list of all games including their status (open, in progress)
 **/
 
 describe('game', function () {
-	var newController = function () { return require('../../controllers/game.js') }, 
-		guid, 
+	var newController = function () { return require('../../controllers/game.js') },
+		guid,
 		counter = 0;
 
 	before(function () {
@@ -45,16 +45,20 @@ describe('game', function () {
 	});
 
 	describe('create', function () {
-		var id;
+		var game;
 
 		beforeEach(function () {
 			var controller = newController();
 
-			id = controller.create();
+			game = controller.create('player1');
 		});
 
 		it('should assign a unique ID', function () {
-			expect(id).to.have.property('gameId').equal('xxx-yyy1');
+			expect(game).to.have.property('gameId').equal('xxx-yyy1');
+		});
+
+		it('should assign the player', function () {
+			expect(game).to.have.property('playerId').equal('player1');
 		});
 	});
 
@@ -64,9 +68,9 @@ describe('game', function () {
 		beforeEach(function () {
 			var controller = newController();
 
-			controller.create();
-			controller.create();
-			controller.create();
+			controller.create('player2');
+			controller.create('player3');
+			controller.create('player4');
 
 			list = controller.list();
 		});
@@ -77,6 +81,10 @@ describe('game', function () {
 			expect(list[2]).to.have.property('gameId').equal('xxx-yyy3');
 			expect(list[3]).to.have.property('gameId').equal('xxx-yyy4');
 		});
+
+		it('should have all active players', function () {
+			expect(list[0]).to.have.property('playerId').equal('player1');
+		})
 	});
 
 	describe('join', function () {

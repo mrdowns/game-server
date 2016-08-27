@@ -18,10 +18,15 @@ var io = require('socket.io').listen(app.listen(port));
 io.sockets.on('connection', function (socket) {
 
 	socket.emit('list', game.list());
-	
+
 	socket.on('create', function (data) {
-		game.create()
+		game.create(data.player);
 		io.sockets.emit('list', game.list());
+	});
+
+	socket.on('join', function (data) {
+		game.join(data.player, data.gameId);
+		io.sockets.emit('join', data);
 	});
 });
 
