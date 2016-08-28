@@ -3,7 +3,7 @@
 var mockery = require('mockery'),
 	chai = require('chai'),
 	expect = chai.expect,
-	Game = require('../../controllers/game.js');
+	Game; // need to require this after mocking its dependencies
 
 /**
 
@@ -44,6 +44,9 @@ describe('game', function () {
 		};
 
 		mockery.registerMock('node-uuid', guid);
+
+		// this needs to be after the register mock call
+		Game = require('../../controllers/game.js');
 	});
 
 	describe('create', function () {
@@ -78,7 +81,6 @@ describe('game', function () {
 		});
 
 		it('should return all active games', function () {
-			console.log(list);
 			expect(list[0]).to.have.property('gameId').equal('xxx-yyy1');
 			expect(list[1]).to.have.property('gameId').equal('xxx-yyy2');
 			expect(list[2]).to.have.property('gameId').equal('xxx-yyy3');
