@@ -1,9 +1,10 @@
 var express = require('express');
 var handlebars = require('express-handlebars');
-var game = require('./controllers/game.js');
+var Game = require('./controllers/game.js');
 
 var app = express();
 var port = 3000;
+var game = new Game();
 
 app.set('view engine', 'handlebars');
 app.engine('handlebars', handlebars());

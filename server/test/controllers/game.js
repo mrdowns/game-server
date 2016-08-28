@@ -1,7 +1,9 @@
+'use strict';
+
 var mockery = require('mockery'),
-	sinon = require('sinon'),
 	chai = require('chai'),
-	expect = chai.expect;
+	expect = chai.expect,
+	Game = require('../../controllers/game.js');
 
 /**
 
@@ -25,12 +27,12 @@ retrive list of all games including their status (open, in progress)
 **/
 
 describe('game', function () {
-	var newController = function () { return require('../../controllers/game.js') },
-		guid,
+	var guid,
 		counter = 0;
 
 	before(function () {
 		mockery.enable({
+			useCleanCache: true,
 			warnOnUnregistered: false
 		});
 
@@ -48,7 +50,7 @@ describe('game', function () {
 		var game;
 
 		beforeEach(function () {
-			var controller = newController();
+			var controller = new Game();
 
 			game = controller.create('player1');
 		});
@@ -66,32 +68,34 @@ describe('game', function () {
 		var list;
 
 		beforeEach(function () {
-			var controller = newController();
+			var controller = new Game();
 
+			controller.create('player1');
 			controller.create('player2');
 			controller.create('player3');
-			controller.create('player4');
 
 			list = controller.list();
 		});
 
 		it('should return all active games', function () {
+			console.log(list);
 			expect(list[0]).to.have.property('gameId').equal('xxx-yyy1');
 			expect(list[1]).to.have.property('gameId').equal('xxx-yyy2');
 			expect(list[2]).to.have.property('gameId').equal('xxx-yyy3');
-			expect(list[3]).to.have.property('gameId').equal('xxx-yyy4');
 		});
 
 		it('should have all active players', function () {
 			expect(list[0]).to.have.property('playerId').equal('player1');
-		})
+			expect(list[1]).to.have.property('playerId').equal('player2');
+			expect(list[2]).to.have.property('playerId').equal('player3');
+		});
 	});
 
 	describe('join', function () {
 		var games = {};
 
 		before(function () {
-			var controller = newController();
+			var controller = new Game();
 
 			controller.create();
 			controller.create();
@@ -136,6 +140,10 @@ describe('game', function () {
 		it('shouldnt do anything with an invalid id', function () {
 			expect(games['g7']).to.be.null;
 		});
+	});
+
+	afterEach(function () {
+		counter = 0;
 	});
 
 	after(function () {

@@ -1,22 +1,26 @@
+'use strict';
+
 var uuid = require('node-uuid');
 var _ = require('underscore');
 
-var activeGames = [];
+class Game {
+	constructor() {
+		this.activeGames = [];
+	}
 
-module.exports = {
-	create: function (playerId) {
+	create(playerId) {
 		var id = uuid.v4();
 		var obj = {'gameId':id, 'playerId': playerId};
-		activeGames.push(obj);
+		this.activeGames.push(obj);
 		return obj;
-	},
+	}
 
-	destroy: function () {
+	destroy() {
 
-	},
+	}
 
-	join: function(playerId, gameId) {
-		var game = _.find(activeGames, function (game) { return game.gameId === gameId });
+	join(playerId, gameId) {
+		var game = _.find(this.activeGames, function (game) { return game.gameId === gameId });
 		if (game) {
 			game.players = game.players || [];
 
@@ -31,13 +35,15 @@ module.exports = {
 		} else {
 			return null;
 		}
-	},
+	}
 
-	start: function() {
+	start() {
 
-	},
+	}
 
-	list: function() {
-		return activeGames;
+	list() {
+		return this.activeGames;
 	}
 }
+
+module.exports = Game;
