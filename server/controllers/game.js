@@ -1,9 +1,7 @@
-'use strict';
+import uuid from 'node-uuid';
+import { _ } from 'underscore';
 
-var uuid = require('node-uuid');
-var _ = require('underscore');
-
-class Game {
+export class Game {
 	constructor() {
 		this.activeGames = [];
 	}
@@ -45,5 +43,3 @@ class Game {
 		return this.activeGames;
 	}
 }
-
-module.exports = Game;

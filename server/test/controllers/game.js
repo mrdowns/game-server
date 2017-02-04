@@ -1,9 +1,6 @@
-'use strict';
-
-var mockery = require('mockery'),
-	chai = require('chai'),
-	expect = chai.expect,
-	Game; // need to require this after mocking its dependencies
+import mockery from "mockery";
+import { expect } from 'chai';
+let Game; // need to require this after mocking its dependencies
 
 /**
 
@@ -46,13 +43,15 @@ describe('game', function () {
 		mockery.registerMock('node-uuid', guid);
 
 		// this needs to be after the register mock call
-		Game = require('../../controllers/game.js');
+		Game = require('../../controllers/game.js').Game;
+		console.log(Game);
 	});
 
 	describe('create', function () {
 		var game;
 
 		beforeEach(function () {
+			console.log(typeof Game);
 			var controller = new Game();
 
 			game = controller.create('player1');
